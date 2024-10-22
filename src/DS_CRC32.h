@@ -13,7 +13,6 @@
 #include <DualSenseWindows/Device.h>
 #include <DualSenseWindows/DS5State.h>
 
-#include <Windows.h>
 
 namespace __DS5W {
 	/// <summary>

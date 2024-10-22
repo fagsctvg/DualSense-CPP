@@ -13,12 +13,10 @@
 #include <DualSenseWindows/Device.h>
 #include <DualSenseWindows/DS5State.h>
 
-#include <Windows.h>
-
 namespace __DS5W {
 	namespace Input {
 		/// <summary>
-		/// Interprete the hid returned buffer 
+		/// Interprete the hid returned buffer
 		/// </summary>
 		/// <param name="hidInBuffer">Input buffer</param>
 		/// <param name="ptrInputState">Input state to be set</param>
