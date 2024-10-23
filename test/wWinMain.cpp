@@ -1,30 +1,20 @@
+#include <cstdint>
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <cstring>
 #include <cstdlib>  // For std::system
-#include <DualSenseWindows/IO.h>
-#include <DualSenseWindows/Device.h>
-#include <DualSenseWindows/Helpers.h>
+#include <thread>
+#include <chrono>
+#include "IO.h"
+#include "Device.h"
+#include "Helpers.h"
+#include "hidapi/hidapi.h"
 
 typedef std::wstringstream wstrBuilder;
 
 class Console {
 public:
-    Console() {
-#ifdef _WIN32
-        AllocConsole();
-        consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
-#else
-        // Unix specific initialization if needed
-#endif
-    }
-
-    ~Console() {
-#ifdef _WIN32
-        FreeConsole();
-#endif
-    }
-
     void writeLine(const std::wstring& text) {
         write(text);
         write(L"\n");
@@ -36,22 +26,13 @@ public:
     }
 
     void write(const std::wstring& text) {
-#ifdef _WIN32
-        WriteConsoleW(consoleHandle, text.c_str(), text.length(), NULL, NULL);
-#else
-        std::wcout << text;  // For Unix-like systems
-#endif
+        std::wcout << text;  // Use standard output for Unix-like systems
     }
 
     void write(wstrBuilder& builder) {
         write(builder.str());
         builder.str(L"");
     }
-
-private:
-#ifdef _WIN32
-    HANDLE consoleHandle;
-#endif
 };
 
 int main() {
@@ -68,7 +49,8 @@ int main() {
     // Check size
     if (controllersCount == 0) {
         console.writeLine(L"No DualSense controller found!");
-        std::system("pause");  // For Windows; this can be modified for Unix if needed
+        std::wcout << L"Press Enter to exit." << std::endl;
+        std::cin.get();  // Wait for user input
         return -1;
     }
 
@@ -101,21 +83,18 @@ int main() {
             builder << L"USB";
         }
         builder << L") Press L1 and R1 to exit";
-#ifdef _WIN32
-        SetConsoleTitle(builder.str().c_str());
-#endif
-        builder.str(L"");
+        builder.str(L""); // Clear the builder
 
         // State object
         DS5W::DS5InputState inState;
         DS5W::DS5OutputState outState;
-        ZeroMemory(&inState, sizeof(DS5W::DS5InputState));
-        ZeroMemory(&outState, sizeof(DS5W::DS5OutputState));
+        std::memset(&inState, 0, sizeof(DS5W::DS5InputState));
+        std::memset(&outState, 0, sizeof(DS5W::DS5OutputState));
 
         // Color intensity
         float intensity = 1.0f;
-        uint16_t lrmbl = 0.0;
-        uint16_t rrmbl = 0.0;
+        uint16_t lrmbl = 0;
+        uint16_t rrmbl = 0;
 
         // Force
         DS5W::TriggerEffectType rType = DS5W::TriggerEffectType::NoResitance;
@@ -173,11 +152,15 @@ int main() {
                 std::this_thread::sleep_for(std::chrono::milliseconds(10));
             }
         }
+
+        // Disconnect
+        //DS5W::disconnectDevice(&con);
+        //console.writeLine(L"DualSense controller disconnected");
+    } else {
+        console.writeLine(L"Failed to connect to DualSense controller");
     }
 
-    // Disconnect
-    DS5W::uninitDeviceContext(&con);
-    console.writeLine(L"Controller disconnected. Press any key to exit.");
-    std::system("pause");  // For Windows; can be changed to another method for Unix
+    std::wcout << L"Press Enter to exit." << std::endl;
+    std::cin.get();  // Wait for user input
     return 0;
 }

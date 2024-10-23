@@ -1,3 +1,4 @@
+#include <cstdint>
 /*
 	Helpers.h is part of DualSenseWindows
 	https://github.com/Ohjurot/DualSense-Windows
@@ -9,8 +10,8 @@
 */
 #pragma once
 
-#include <DualSenseWindows/DSW_Api.h>
-#include <DualSenseWindows/DS5State.h>
+#include "DSW_Api.h"
+#include "DS5State.h"
 
 namespace DS5W {
 	/// <summary>
@@ -21,7 +22,7 @@ namespace DS5W {
 	/// <param name="b">Blue channel</param>
 	/// <returns>DS5W::Color</returns>
 	DS5W_API DS5W::Color color_R32G32B32_FLOAT(float r, float g, float b);
-	
+
 	/// <summary>
 	/// Convert from 4-Color RGBA normalized  float to DS5W::Color
 	/// </summary>

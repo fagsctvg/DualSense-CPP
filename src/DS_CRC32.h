@@ -1,3 +1,4 @@
+#include <cstdint>
 /*
 	DS_CRC32.h is part of DualSenseWindows
 	https://github.com/Ohjurot/DualSense-Windows
@@ -9,9 +10,9 @@
 */
 #pragma once
 
-#include <DualSenseWindows/DSW_Api.h>
-#include <DualSenseWindows/Device.h>
-#include <DualSenseWindows/DS5State.h>
+#include "DSW_Api.h"
+#include "Device.h"
+#include "DS5State.h"
 
 
 namespace __DS5W {
@@ -23,12 +24,12 @@ namespace __DS5W {
 		/// <summary>
 		/// Fast lookup precalculated byte crc hashes
 		/// </summary>
-		const static UINT32 hashTable[256];
+		const static uint32_t hashTable[256];
 
 		/// <summary>
 		/// Start seed for crc hash
 		/// </summary>
-		const static UINT32 crcSeed;
+		const static uint32_t crcSeed;
 
 
 	public:
@@ -38,6 +39,6 @@ namespace __DS5W {
 		/// <param name="buffer">Input buffer</param>
 		/// <param name="len">Length of buffer</param>
 		/// <returns>Computed crc value</returns>
-		static UINT32 compute(unsigned char* buffer, size_t len);
+		static uint32_t compute(unsigned char* buffer, size_t len);
 	};
 }

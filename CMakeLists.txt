@@ -25,6 +25,9 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(ghidapi)
 
+# Add include directories for hidapi
+include_directories(${ghidapi_SOURCE_DIR} ${ghidapi_BINARY_DIR})
+
 # Source files
 set(SOURCES
     src/DS5_Input.cpp
@@ -44,6 +47,10 @@ target_link_libraries(ds5cpp hidapi)
 if (BUILD_TESTS)
     enable_testing()
     add_executable(ds5cpp_test test/wWinMain.cpp)
+    
+    # Link the test executable to the library and include directories
     target_link_libraries(ds5cpp_test ds5cpp hidapi)
+    target_include_directories(ds5cpp_test PRIVATE ${ghidapi_SOURCE_DIR} ${ghidapi_BINARY_DIR})
+    
     add_test(NAME ds5cpp_test COMMAND ds5cpp_test)
 endif()

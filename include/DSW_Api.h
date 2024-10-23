@@ -1,3 +1,4 @@
+#include <cstdint>
 /*
 	DSW_Api.h is part of DualSenseWindows
 	https://github.com/Ohjurot/DualSense-Windows
@@ -9,15 +10,7 @@
 */
 #pragma once
 
-#if defined(DS5W_BUILD_DLL)
-#define DS5W_API __declspec(dllexport)
-#elif defined(DS5W_BUILD_LIB)
 #define DS5W_API
-#elif defined(DS5W_USE_LIB)
-#define DS5W_API
-#else
-#define DS5W_API __declspec(dllimport)
-#endif
 
 #define DS5W_SUCCESS(expr) ((expr) == _DS5W_ReturnValue::OK)
 #define DS5W_FAILED(expr) ((expr) != _DS5W_ReturnValue::OK)

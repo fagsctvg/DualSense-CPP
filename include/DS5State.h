@@ -1,3 +1,4 @@
+#include <cstdint>
 /*
 	DS5State.h is part of DualSenseWindows
 	https://github.com/Ohjurot/DualSense-Windows

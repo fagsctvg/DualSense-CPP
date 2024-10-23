@@ -1,3 +1,4 @@
+#include <cstdint>
 /*
 	DualSenseWindows API
 	https://github.com/Ohjurot/DualSense-Windows
@@ -27,9 +28,9 @@
 */
 #pragma once
 
-#include <DualSenseWindows/DSW_Api.h>
-#include <DualSenseWindows/Device.h>
-#include <DualSenseWindows/DS5State.h>
+#include "DSW_Api.h"
+#include "Device.h"
+#include "DS5State.h"
 
 namespace DS5W {
 	/// <summary>

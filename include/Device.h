@@ -1,3 +1,4 @@
+#include <cstdint>
 /*
 	Device.h is part of DualSenseWindows
 	https://github.com/Ohjurot/DualSense-Windows
@@ -36,7 +37,7 @@ namespace DS5W {
 			/// <summary>
 			/// Path to the discovered device
 			/// </summary>
-			wchar_t path[260];
+			char path[260];
 
 			/// <summary>
 			/// Connection type of the discoverd device
@@ -56,7 +57,7 @@ namespace DS5W {
 			/// <summary>
 			/// Path to the device
 			/// </summary>
-			wchar_t devicePath[260];
+			char devicePath[260];
 
 			/// <summary>
 			/// Handle to the open device

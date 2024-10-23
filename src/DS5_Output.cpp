@@ -1,3 +1,5 @@
+#include <cstdint>
+#include <algorithm>
 #include "DS5_Output.h"
 
 void __DS5W::Output::createHidOutputBuffer(unsigned char* hidOutBuffer, DS5W::DS5OutputState* ptrOutputState) {
@@ -74,20 +76,26 @@ void __DS5W::Output::processTrigger(DS5W::TriggerEffect* ptrEffect, unsigned cha
 			buffer[0x05] = ptrEffect->EffectEx.middleForce;
 			buffer[0x06] = ptrEffect->EffectEx.endForce;
 			// Frequency
-			buffer[0x09] = max(1, ptrEffect->EffectEx.frequency / 2);
+			buffer[0x09] = std::max(1, ptrEffect->EffectEx.frequency / 2);
 
 			break;
 
 		// Calibrate
 		case DS5W::TriggerEffectType::Calibrate:
-			// Mode 
+			// Mode
 			buffer[0x00] = 0xFC;
 
 			break;
 
 		// No resistance / default
 		case DS5W::TriggerEffectType::NoResitance:
-			__fallthrough;
+			// All zero
+			buffer[0x00] = 0x00;
+			buffer[0x01] = 0x00;
+			buffer[0x02] = 0x00;
+
+			break;
+
 		default:
 			// All zero
 			buffer[0x00] = 0x00;
@@ -95,5 +103,5 @@ void __DS5W::Output::processTrigger(DS5W::TriggerEffect* ptrEffect, unsigned cha
 			buffer[0x02] = 0x00;
 
 			break;
-	}		
+	}
 }

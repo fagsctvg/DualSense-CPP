@@ -1,3 +1,4 @@
+#include <cstdint>
 /*
     IO.cpp is part of DualSenseWindows
     https://github.com/Ohjurot/DualSense-Windows
@@ -9,22 +10,18 @@
 */
 
 #include <hidapi.h>
-#include <DualSenseWindows/IO.h>
-#include <DualSenseWindows/DS_CRC32.h>
-#include <DualSenseWindows/DS5_Input.h>
-#include <DualSenseWindows/DS5_Output.h>
+#include "IO.h"
+#include "DS_CRC32.h"
+#include "DS5_Input.h"
+#include "DS5_Output.h"
 
 #include <cstdlib>
 #include <cstring>
 
 // Cross-platform handle for HID device
-#define DS5W_E_EXTERNAL_HIDAPI -1
 
 DS5W_API DS5W_ReturnValue DS5W::enumDevices(void* ptrBuffer, unsigned int inArrLength, unsigned int* requiredLength, bool pointerToArray) {
     struct hid_device_info* devices = hid_enumerate(0x054C, 0x0CE6);  // Sony vendor ID and DualSense product ID
-    if (!devices) {
-        return DS5W_E_EXTERNAL_HIDAPI;
-    }
 
     // Enumerate HID devices and fill the buffer
     unsigned int inputArrIndex = 0;
@@ -152,7 +149,7 @@ DS5W_API DS5W_ReturnValue DS5W::setDeviceOutputState(DS5W::DeviceContext* ptrCon
         outputBuffer[0x01] = 0x02;
         __DS5W::Output::createHidOutputBuffer(&outputBuffer[2], ptrOutputState);
 
-        UINT32 crcChecksum = __DS5W::CRC32::compute(outputBuffer, 74);
+        uint32_t crcChecksum = __DS5W::CRC32::compute(outputBuffer, 74);
         outputBuffer[0x4A] = (unsigned char)((crcChecksum >> 0) & 0xFF);
         outputBuffer[0x4B] = (unsigned char)((crcChecksum >> 8) & 0xFF);
         outputBuffer[0x4C] = (unsigned char)((crcChecksum >> 16) & 0xFF);
