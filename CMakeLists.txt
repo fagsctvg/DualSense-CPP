@@ -37,19 +37,21 @@ set(SOURCES
     src/IO.cpp
 )
 
-# Add the library target
+# Add the library target as STATIC
 add_library(ds5cpp STATIC ${SOURCES})
 
-# Link the hidapi library
-target_link_libraries(ds5cpp hidapi)
+# Link the hidapi library statically if possible
+target_link_libraries(ds5cpp PRIVATE hidapi)
 
 # Tests
 if (BUILD_TESTS)
     enable_testing()
     add_executable(ds5cpp_test test/wWinMain.cpp)
     
-    # Link the test executable to the library and include directories
-    target_link_libraries(ds5cpp_test ds5cpp hidapi)
+    # Link the test executable to the static library
+    target_link_libraries(ds5cpp_test PRIVATE ds5cpp hidapi)
+    
+    # Include directories for the test
     target_include_directories(ds5cpp_test PRIVATE ${ghidapi_SOURCE_DIR} ${ghidapi_BINARY_DIR})
     
     add_test(NAME ds5cpp_test COMMAND ds5cpp_test)
